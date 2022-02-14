@@ -13,12 +13,12 @@ class Tute1(ThreeDScene):
             z_length=6,
         )
 
-        graph = axes.get_graph(lambda x: x ** 2, x_range=[-2, 2, 1], color=YELLOW)
+        graph = axes.plot(lambda x: x ** 2, x_range=[-2, 2, 1], color=YELLOW)
         rects = axes.get_riemann_rectangles(
             graph=graph, x_range=[-2, 2], dx=0.1, stroke_color=WHITE
         )
 
-        graph2 = axes.get_parametric_curve(
+        graph2 = axes.plot_parametric_curve(
             lambda t: np.array([np.cos(t), np.sin(t), t]),
             t_range=[-2 * PI, 2 * PI],
             color=RED,
@@ -62,7 +62,6 @@ class Tute2(ThreeDScene):
                 insert_line_no=True,
                 tab_width=2,
                 line_spacing=0.3,
-                scale_factor=0.5,
                 font="Monospace",
             )
             .set(width=5)
@@ -71,14 +70,12 @@ class Tute2(ThreeDScene):
 
         axes = ThreeDAxes()
 
-        graph = axes.get_graph(lambda x: x ** 2, x_range=[-2, 2], color=YELLOW)
+        graph = axes.plot(lambda x: x ** 2, x_range=[-2, 2], color=YELLOW)
 
-        surface = ParametricSurface(
+        surface = Surface(
             lambda u, v: axes.c2p(v * np.cos(u), v * np.sin(u), 0.5 * v ** 2),
-            u_min=0,
-            u_max=2 * PI,
-            v_min=0,
-            v_max=3,
+            u_range=[0,2 * PI],
+            v_range=[0,3],
             checkerboard_colors=[GREEN, RED],
         )
 
@@ -100,19 +97,17 @@ class Tute3(ThreeDScene):
 
         axes = ThreeDAxes(y_range=[-3, 10, 3], y_length=7).add_coordinates()
 
-        graph = axes.get_graph(lambda x: x, x_range=[0, 3], color=RED_B)
+        graph = axes.plot(lambda x: x, x_range=[0, 3], color=RED_B)
 
         area = axes.get_area(graph=graph, x_range=[0, 3])
 
         e = ValueTracker(0)
 
         surface = always_redraw(
-            lambda: ParametricSurface(
+            lambda: Surface(
                 lambda u, v: axes.c2p(v, v * np.cos(u), v * np.sin(u)),
-                u_min=0,
-                u_max=e.get_value(),
-                v_min=0,
-                v_max=3,
+                u_range=[0,e.get_value()],
+                v_range=[0,3],
                 checkerboard_colors=[GREEN, PURPLE],
             )
         )
